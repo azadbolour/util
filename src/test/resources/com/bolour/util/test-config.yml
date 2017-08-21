@@ -1,0 +1,11 @@
+users: 10
+durationSeconds: 30
+thinkTimeMillis: 1000
+personas:
+  - name: persona1
+    weight: 80
+  - name: persona2
+    weight: 20
+gameConfig:
+  gameServerUrl: 'http://localhost:6587'
+  gameEndProbability: 0.2
