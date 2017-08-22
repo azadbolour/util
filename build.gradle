@@ -1,0 +1,26 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.bolour.util'
+version = '0.1-SNAPSHOT'
+
+description = """Utilities"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'junit', name: 'junit', version:'4.12'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
+    compile group: 'org.yaml', name: 'snakeyaml', version:'1.18'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.3'
+    compile group: 'org.springframework', name: 'spring-web', version:'4.2.5.RELEASE'
+}
