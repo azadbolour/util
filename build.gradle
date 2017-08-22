@@ -1,5 +1,9 @@
 apply plugin: 'java'
+
+// Use the .m2 repository. You need to use some third party repository.
 apply plugin: 'maven'
+
+// Artifact id is specified in settings.gradle
 
 group = 'com.bolour.util'
 version = '0.1-SNAPSHOT'
@@ -9,11 +13,9 @@ description = """Utilities"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
-
 repositories {
-        
-     maven { url "http://repo.maven.apache.org/maven2" }
+     mavenCentral()
+     jcenter()
 }
 dependencies {
     compile group: 'junit', name: 'junit', version:'4.12'
