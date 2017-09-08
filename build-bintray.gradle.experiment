@@ -1,0 +1,117 @@
+
+//
+// Work in progress. Still in the dark about the details. To be completed and tested.
+// See TODO items.
+//
+
+
+apply plugin: 'java'
+
+// Use the .m2 repository. You need to use some third party repository.
+apply plugin: 'maven'
+
+apply plugin: 'com.jfrog.bintray'
+
+//
+// bintray integration:
+// https://github.com/bintray/gradle-bintray-plugin
+
+// See the following samples.
+// https://github.com/bintray/gradle-bintray-plugin/blob/master/build.gradle
+// https://github.com/pivotal-chicago/java-library-gradle-travis-coveralls-bintray/blob/master/gradle/distribution.gradle
+// https://github.com/Philio/bintray-publishing/blob/master/bintray.gradle
+//
+
+// TODO. Add properties file - preferably somewhere other than within the project. 
+// In $HOME/.bintray for example? To avoid inadvertently pushing secrets to public github.
+// Includes bintray.user, bintray.apiKey, bintray.userOrg if any. Anything else??
+Properties properties = new Properties()
+properties.load(project.rootProject.file('locationOfLocalProperties').newDataInputStream())
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+// Note: artifact id is specified in settings.gradle. 
+// TODO. But we have several artifacts some defined here. How will that work?
+group = 'com.bolour.util'
+version = '0.1-SNAPSHOT'  // Should this be changed to 0.2 - the name of the published version? Use a variable?
+// version = libraryVersion // Should we use this??
+
+description = """Utilities"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+     mavenCentral()
+     jcenter()
+}
+dependencies {
+    compile group: 'junit', name: 'junit', version:'4.12'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
+    compile group: 'org.yaml', name: 'snakeyaml', version:'1.18'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.3'
+    compile group: 'org.springframework', name: 'spring-web', version:'4.2.5.RELEASE'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                // Until gradle builds are clean and stable, maven builds are the standard for this project.
+                // TODO. Will there be any issue/interference from the pom.xml in this directory?
+                withXml {
+                  def root = asNode()
+                  // TODO. Not sure if anything else is required here. Or defaults taken from bintray repository.
+                  /*
+                  root.appendNode 'description', properties['pom.description']
+                  root.appendNode 'url', properties['pom.url']
+                  root.children().last() + pomConfig
+                  */
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+
+    // TODO. Don't see any place to get an api key after logging in to bintray.
+    // Using github identity for bintray. Do I need to use apiKey? Should I? How?
+    // key = properties.getProperty("bintray.apiKey")
+
+    configurations = ['archives']  // TODO. What does this mean? What are the choices?
+
+    publish = false // TODO. Should we just publish in one go? 
+    pkg {
+        repo = 'util'
+        name = 'util' 
+        userOrg = properties.getProperty("bintray.userOrg") // TODO. Not sure about this one.
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/azadbolour/util'
+        version {  // TODO. Does this relate to the version defined at the top?
+          name = '0.2'
+          desc = 'initial alpha release'
+          // TODO. Who has property?
+          released = hasProperty('versionDate') ? versionDate : new Date()
+          vcsTag = 'version-0.2'
+          attributes = []
+        }
+}
