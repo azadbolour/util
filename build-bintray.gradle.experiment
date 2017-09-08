@@ -111,6 +111,7 @@ bintray {
           desc = 'initial alpha release'
           // TODO. Who has property?
           released = hasProperty('versionDate') ? versionDate : new Date()
+          // TODO. Make sure you tag git and push the tag.
           vcsTag = 'version-0.2'
           attributes = []
         }
