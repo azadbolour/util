@@ -22,10 +22,11 @@ export M2_HOME=$HOME/software/mvn/apache-maven-3.2.2
 export M2=$M2_HOME/bin
 
 MY_LOCAL=$HOME/.local
+LOCAL_GIT=/usr/local/git
 
-base_path="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:$HOME/bin"
+base_path="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 echo "base_path=$base_path"
-export PATH="$JAVA_HOME/bin:$WORKSPACE/script:$M2:$base_path:."
+export PATH="$LOCAL_GIT/bin:$JAVA_HOME/bin:$WORKSPACE/script:$M2:$base_path:."
 echo "PATH=$PATH"
 
 alias be='. branch.sh' # branch environment
