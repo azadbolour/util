@@ -126,7 +126,11 @@
     <distributionManagement>
         <repository>
             <id>bintray-server</id>
-            <url>https://api.bintray.com/maven/bolour/util/util/;publish=1</url>
-        </repository>
+            <url>https://api.bintray.com/maven/azadbolour/util/util/;publish=1</url>
+          </repository>
+          <snapshotRepository>
+              <id>jfrog-snapshots</id>
+              <url>http://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+          </snapshotRepository>
     </distributionManagement>
 </project>
